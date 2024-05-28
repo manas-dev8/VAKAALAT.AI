@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vakalat.AI - Lawyers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='legal_connect.css') }}"> 
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="static/logo.png" alt="Vakalat.AI Logo"> 
+            <h1>वकालत.AI</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/buy_documents">Services</a></li>
+                <li><a href="/lawyers">Legal-Connect</a></li>
+                <li><a href="/lawgpt">LawGPT</a></li>
+                <li><a href="#">Talk2Doc</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="search-join">
+        <div class="search-bar">
+            <form action="/lawyers" method="GET">
+                <input id="searchInput" type="text" name="query" placeholder="Search for a lawyer...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <button id="joinBtn">Join as a Lawyer</button>
+    </div>
+
+    <div id="lawyerCards" class="lawyer-cards">
+        {% if lawyers %}
+        {% for lawyer in lawyers %}
+        <div class="card">
+            <img src="{{ lawyer['image_path'] }}" alt="{{ lawyer['name'] }}">
+            <h2>{{ lawyer['name'] }}</h2>
+            <div class="buttons">
+                <button class="hireBtn" data-id="{{ lawyer['id'] }}">Hire</button>
+                <button class="hireBtn" data-id="{{ lawyer['id'] }}">View Details</button>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No recommended lawyers found.</p>
+        {% endif %}
+    </div>
+
+
+    <div id="popupForm" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Join as a Lawyer</h2>
+            <form id="lawyerForm" enctype="multipart/form-data" action="/join" method="POST">
+                <input type="file" name="photo" accept="image/*" required>
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="text" name="description" placeholder="Description" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="successMessage" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Success!</h2>
+            <p>You have successfully joined as a lawyer.</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script> 
+</body>
+
+</html>
